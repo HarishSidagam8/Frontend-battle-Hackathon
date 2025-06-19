@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { Star, Play, Sparkles } from 'lucide-react';
+import { Star, Play, Sparkles, FileText, BarChart3, PieChart, Grid3x3 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [activeHover, setActiveHover] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -17,6 +18,98 @@ const Hero = () => {
     { platform: 'Gartner', rating: '350+', reviews: 'reviews' },
     { platform: 'TrustRadius', rating: '550+', reviews: 'reviews' }
   ];
+
+  const interactiveWords = {
+    reports: {
+      icon: FileText,
+      preview: [
+        'Financial Summary Report',
+        'Monthly Performance Analysis',
+        'Quarterly Revenue Report',
+        'Annual Compliance Report'
+      ]
+    },
+    forecasts: {
+      icon: BarChart3,
+      preview: [
+        'Revenue Forecast 2024',
+        'Market Trend Predictions',
+        'Budget Planning Forecast',
+        'Growth Projection Analysis'
+      ]
+    },
+    dashboards: {
+      icon: PieChart,
+      preview: [
+        'Executive Dashboard',
+        'Operations Overview',
+        'Sales Performance',
+        'Customer Analytics'
+      ]
+    },
+    consolidations: {
+      icon: Grid3x3,
+      preview: [
+        'Multi-Entity Consolidation',
+        'Regional Data Merge',
+        'Department Aggregation',
+        'Global Financial Consolidation'
+      ]
+    }
+  };
+
+  const InteractiveWord = ({ word, children }: { word: string; children: React.ReactNode }) => {
+    const wordData = interactiveWords[word as keyof typeof interactiveWords];
+    const IconComponent = wordData?.icon;
+    const isActive = activeHover === word;
+
+    return (
+      <span
+        className="relative inline-block"
+        onMouseEnter={() => setActiveHover(word)}
+        onMouseLeave={() => setActiveHover(null)}
+      >
+        <span
+          className={`relative cursor-pointer transition-all duration-300 ${
+            isActive 
+              ? 'text-blue-300 bg-white/10 px-2 py-1 rounded-lg shadow-lg scale-105' 
+              : 'hover:text-blue-200'
+          }`}
+        >
+          {children}
+          {isActive && (
+            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-300 rounded-full"></span>
+          )}
+        </span>
+        
+        {isActive && wordData && (
+          <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 p-6 animate-fade-in z-20">
+            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white dark:bg-gray-800 border-l border-t border-gray-200 dark:border-gray-700 rotate-45"></div>
+            <h3 className="font-bold text-gray-900 dark:text-white mb-3 text-lg flex items-center">
+              <IconComponent className="w-5 h-5 mr-2 text-blue-600" />
+              {word.charAt(0).toUpperCase() + word.slice(1)}
+            </h3>
+            <ul className="space-y-2">
+              {wordData.preview.map((item, index) => (
+                <li
+                  key={index}
+                  className="flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-all duration-200 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                >
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-3 flex-shrink-0"></div>
+                  <span className="truncate">{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+              <button className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
+                View All {word.charAt(0).toUpperCase() + word.slice(1)} →
+              </button>
+            </div>
+          </div>
+        )}
+      </span>
+    );
+  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden hero-gradient">
@@ -44,12 +137,12 @@ const Hero = () => {
           ))}
         </div>
 
-        {/* Main heading */}
+        {/* Main heading with interactive words */}
         <div className={`${isVisible ? 'animate-scale-in' : 'opacity-0'}`} style={{ animationDelay: '0.3s' }}>
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight">
-            Create reports, forecasts,
+            Create <InteractiveWord word="reports">reports</InteractiveWord>, <InteractiveWord word="forecasts">forecasts</InteractiveWord>,
             <br />
-            dashboards & consolidations
+            <InteractiveWord word="dashboards">dashboards</InteractiveWord> & <InteractiveWord word="consolidations">consolidations</InteractiveWord>
           </h1>
         </div>
 
