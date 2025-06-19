@@ -165,28 +165,6 @@ const FeatureCards = () => {
           })}
         </div>
       </div>
-
-      <style jsx>{`
-        .ripple-container {
-          position: relative;
-          overflow: hidden;
-        }
-
-        .ripple {
-          position: absolute;
-          border-radius: 50%;
-          transform: scale(0);
-          animation: ripple 600ms linear;
-          background-color: rgba(59, 130, 246, 0.3);
-        }
-
-        @keyframes ripple {
-          to {
-            transform: scale(4);
-            opacity: 0;
-          }
-        }
-      `}</style>
     </section>
   );
 };

@@ -59,21 +59,24 @@ const LoadingSpinner = () => {
 
         {/* Progress bar */}
         <div className="w-64 h-1 bg-white/20 rounded-full mt-6 overflow-hidden">
-          <div className="h-full bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 rounded-full animate-pulse loading-progress"></div>
+          <div 
+            className="h-full bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 rounded-full animate-pulse"
+            style={{
+              animation: 'loading-fill 2s ease-in-out infinite'
+            }}
+          ></div>
         </div>
       </div>
 
-      <style jsx>{`
-        .loading-progress {
-          animation: loading-fill 2s ease-in-out infinite;
-        }
-
-        @keyframes loading-fill {
-          0% { width: 0%; }
-          50% { width: 70%; }
-          100% { width: 100%; }
-        }
-      `}</style>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes loading-fill {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+          }
+        `
+      }} />
     </div>
   );
 };
