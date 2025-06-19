@@ -88,6 +88,7 @@ const Navbar = () => {
               <div className="ml-10 flex items-baseline space-x-4 relative">
                 {navItems.map((item) => {
                   const IconComponent = item.icon;
+                  const isActive = activeHover === item.name;
                   return (
                     <div
                       key={item.name}
@@ -97,27 +98,45 @@ const Navbar = () => {
                     >
                       <a
                         href={item.href}
-                        className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+                        className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 transform ${
+                          isActive 
+                            ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 scale-105 shadow-md' 
+                            : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                        }`}
                       >
-                        <IconComponent className="w-4 h-4 mr-2" />
-                        {item.name}
+                        <IconComponent className={`w-4 h-4 mr-2 transition-all duration-300 ${
+                          isActive ? 'text-blue-600 dark:text-blue-400' : ''
+                        }`} />
+                        <span className="relative">
+                          {item.name}
+                          {isActive && (
+                            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-600 dark:bg-blue-400 rounded-full"></span>
+                          )}
+                        </span>
                       </a>
                       
                       {activeHover === item.name && (
-                        <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 animate-fade-in">
-                          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                        <div className="absolute top-full left-0 mt-3 w-72 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 p-6 animate-fade-in z-10">
+                          <div className="absolute -top-2 left-6 w-4 h-4 bg-white dark:bg-gray-800 border-l border-t border-gray-200 dark:border-gray-700 rotate-45"></div>
+                          <h3 className="font-bold text-gray-900 dark:text-white mb-3 text-lg">
                             {item.name}
                           </h3>
-                          <ul className="space-y-1">
+                          <ul className="space-y-2">
                             {item.preview.map((previewItem, index) => (
                               <li
                                 key={index}
-                                className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors duration-150"
+                                className="flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-all duration-200 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50"
                               >
-                                • {previewItem}
+                                <div className="w-2 h-2 bg-blue-500 rounded-full mr-3 flex-shrink-0"></div>
+                                <span className="truncate">{previewItem}</span>
                               </li>
                             ))}
                           </ul>
+                          <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                            <button className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
+                              View All {item.name} →
+                            </button>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -132,7 +151,7 @@ const Navbar = () => {
               variant="ghost"
               size="icon"
               onClick={toggleDarkMode}
-              className="relative"
+              className="relative hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               {isDark ? (
                 <Sun className="h-5 w-5 transition-all duration-300" />
@@ -141,7 +160,7 @@ const Navbar = () => {
               )}
             </Button>
             
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300">
               Start 14-day free trial
             </Button>
           </div>
